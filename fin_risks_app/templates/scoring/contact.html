@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Menu
+{% endblock %}
+{% block content %}
+<div class="row">
+  <section class="col-md-4"></section>
+  <section class="col-md-4 text-start pt-5">
+    <div class="col d-flex justify-content-start">
+      <div class="card" style="width: 60rem; opacity: 0.8;">
+        <div class="card-header">
+          <div class="container">
+            <div class="row">
+              <div class="md-3">
+                <h5>Shanyraq restaurant</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="container">
+            <div class="row mb-3">
+                Our adderss: Kazakhstan, Almaty city, Dostyk ave.
+            </div>
+            <div class="row mb-3">
+                Phone: +7 777 777 77 77
+            </div>
+            <div class="row mb-3">
+                Working hours: from 12:00 till 24:00
+            </div>
+            <div class="row mb-5">
+                Hours to book a table: from 12:00 till 21:30
+            </div>
+          </div>
+          <a class="btn btn-custom" id="backButton">Back</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="col-md-1"></section>
+  <script>
+    // Script to navigate to the previous page
+    document.getElementById('backButton').addEventListener('click', function() {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = '/';
+        }
+    });
+</script>
+{% endblock %}

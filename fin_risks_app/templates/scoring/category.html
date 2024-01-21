@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Menu
+{% endblock %}
+{% block content %}
+<div class="row">
+  <section class="col-md-3"></section>
+  <section class="col-md-8 text-start pt-1">
+    <div class="col d-flex justify-content-start">
+      <div class="card" style="width: 60rem; opacity: 0.8;">
+        <div class="card-header">
+          <h6>{{ category }}</h6>
+        </div>
+        <div class="card-body">
+          <div class="container">
+            {% for dish in category_dishes %}
+              <th scope="row">{{ dish.name }}</th>
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <a href="{% url 'restaurant:dish_detail' dish.pk %}"><img src="{{ dish.image.url }}" class="d-block w-100"></a>
+                </div>
+                <div class="col-md-7">
+                  {{ dish.description_short }}
+                </div>
+                <div class="col-md-1 price">
+                  ${{ dish.price }}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="col-md-1"></section>
+{% endblock %}

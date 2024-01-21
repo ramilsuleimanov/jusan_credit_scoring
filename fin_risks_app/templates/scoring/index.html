@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Реестр запросов
+{% endblock %}
+{% block content %}
+  <div class="row py-3"></div>
+  <table class="table table-dark table-hover">
+    <thead>
+      <tr>
+        <th scope="col">№ запроса</th>
+        <th scope="col">БИН</th>
+        <th scope="col">Страхователь</th>
+        <th scope="col">Номер контракта</th>
+        <th scope="col">Дата контракта</th>
+        <th scope="col">Дата запроса</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for request in requests %}
+      <tr>
+        <td>{{ request.id }}</td>
+        <td><a href="{% url 'scoring:request_detail' request.id %}">{{ request.policyholder.bin }}</a></td>
+        <td><a href="{% url 'scoring:request_detail' request.id %}">{{ request.policyholder.name }}</a></td>
+        <td>{{ request.contract_number }}</td>
+        <td>{{ request.contract_date|date:"d.m.Y" }}</td>
+        <td>{{ request.created_at }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <script>
+  </script>
+{% endblock %}

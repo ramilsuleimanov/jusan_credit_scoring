@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Reservation
+{% endblock %}
+{% block content %}
+<!-- Modal for confirmation -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Cancel Reservation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to cancel this reservation?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        {% csrf_token %}
+        <button type="button" id="confirmButton" class="btn btn-custom">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal for cancellation outcome -->
+<div class="modal fade" id="outcomeModal" tabindex="-1" aria-labelledby="outcomeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="outcomeModalLabel">Cancel Reservation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="outcomeMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Section with reservations -->
+<div class="row">
+  <section class="col-md-4"></section>
+  <section class="col-md-7 pt-1">
+    <a class="btn btn-custom mx-3 my-3" href="{% url 'restaurant:reservation_create' %}">Make new reservation</a>
+    <div class="col d-flex justify-content-center">
+      <div class="card" style="width: 50rem;">
+        <div class="card-header">
+          <h6>Active reservations</h6>
+        </div>
+        <div class="card-body">
+          {% if reservations %}
+            <div class="d-flex-inline">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Guests</th>
+                    <th scope="col">Table No.</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody class="align-middle">
+                  {% for reservation in reservations %}
+                    <tr class="text-center">
+                      <th scope="row">{{ reservation.date_time|date:"Y-m-d" }}</th>
+                      <td>{{ reservation.date_time|time:"H:i" }}</td>
+                      <td>{{ reservation.party_size }}</td>
+                      <td>{{ reservation.table }}</td>
+                      <td>{{ reservation.status }}</td>
+                      <td>
+                        <a class="btn btn-custom mx-3 my-3" href="{% url 'restaurant:reservation_update' reservation.id %}">Change</a>
+                        <button type="button" class="btn btn-custom btn-cancel mx-3 my-3" id="cancelBtn_{{ reservation.id }}"  data-bs-toggle="modal" data-bs-target="#confirmModal" value="{{ reservation.id }}">Cancel</button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}You have no reservations
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="col-md-1"></section>
+  <!-- Script to handle canceling reservation-->
+  <script>
+    // Retrieves reservation id when Cancel button is clicked
+    let cancelButtons = document.querySelectorAll('.btn-cancel');
+    cancelButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            let reservationId = this.getAttribute('value');
+            // Get the CSRF token
+            const csrfTokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
+            const csrfToken = csrfTokenInput.value;
+            // Adds a click event listener to the "Confirm Cancel" button
+            document.getElementById('confirmButton').addEventListener('click', function () {
+                // Sends request to backend
+                var confirmationModal = bootstrap.Modal.getInstance((document.getElementById('confirmModal')))
+                console.log(confirmationModal)
+                confirmationModal.hide();
+                fetch(`/reservation/${reservationId}/cancel/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                    },
+                })
+                // Receives response in json format
+                .then(response => response.json())
+                // Shows response in the popup screen
+                .then(data => {
+                    const outcomeMessage = document.getElementById('outcomeMessage');
+                    if (data.message) {
+                        outcomeMessage.textContent = data.message;
+                    } else {
+                        outcomeMessage.textContent = data.error || 'An error occurred.';
+                    }
+                    // Show the outcome modal
+                    const outcomeModal = new bootstrap.Modal(document.getElementById('outcomeModal'));
+                    outcomeModal.show();
+                })
+                // Show the outcome modal for errors
+                .catch(error => {
+                    console.error(error);
+                    const outcomeMessage = document.getElementById('outcomeMessage');
+                    outcomeMessage.textContent = 'An error occurred while cancelling the reservation.';
+                    const outcomeModal = new bootstrap.Modal(document.getElementById('outcomeModal'));
+                    outcomeModal.show();
+                });
+            });
+        });
+    });
+    document.getElementById('outcomeModal').addEventListener('hidden.bs.modal', function () {
+        window.location.reload();
+  });
+  </script>
+{% endblock %}

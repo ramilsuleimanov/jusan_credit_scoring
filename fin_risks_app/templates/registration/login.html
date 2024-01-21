@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}Войти{% endblock %}
+{% block content %}
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p class="text-center">
+        У вас нет прав для просмотра этой страницы.
+      </p>
+    {% else %}
+      <p class="text-center">
+        Пожалуйста, авторизуйтесь для просмотра этой страницы.
+      </p>
+    {% endif %}
+  {% endif %}
+  <div class="col d-flex justify-content-center pt-md-5">
+    <div class="card">
+      <div class="card-header">
+        <h6>Войти</h6>
+      </div>
+      <div class="card-body">
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <input type="hidden" name="next" value="{{ next }}">
+          <div class="pt-3">
+            <button class="btn btn-custom" type="submit">Войти</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

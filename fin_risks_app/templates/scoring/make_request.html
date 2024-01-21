@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block title %}
+  Направить запрос
+{% endblock %}
+{% block content %}
+  <div class="row py-5"></div>
+  <div class="col d-flex justify-content-center">
+    <div class="card">
+      <div class="card-header">
+        Выберите excel файл (.xls, .xlsx) с заявкой
+      </div>
+      <div class="card-body py-5">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="pt-md-3">
+            <button class="btn btn-custom" type="submit">Направить запрос</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

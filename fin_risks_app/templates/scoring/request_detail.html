@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Детали запроса
+{% endblock %}
+{% block content %}
+{{ reqeust }}
+<div class="col-md-7">
+  <table class="table table-dark table-striped">
+    <tbody>
+      <tr>
+        <th scope="col">№ запроса</th>
+        <td>{{ request.id }}
+      </tr>
+      <tr>
+        <th scope="col">БИН</th>
+        <td>{{ request.policyholder.bin }}
+      </tr>
+      <tr>
+        <th scope="col">Страхователь</th>
+        <td>{{ request.policyholder }}
+      </tr>
+      <tr>
+        <th scope="col">Номер контракта</th>
+        <td>{{ request.contract_number }}
+      </tr>
+      <tr>
+        <th scope="col">Дата контракта</th>
+        <td>{{ request.contract_date|date:"d.m.Y" }}
+      </tr>
+      <tr>
+        <th scope="col">Сумма контракта</th>
+        <td>{{ request.contract_amount|floatformat:2 }}
+      </tr>
+      <tr>
+        <th scope="col">Дата запроса</th>
+        <td>{{ request.created_at }}
+      </tr>
+      <tr>
+        <th scope="col">Скоринговый балл</th>
+        <td>{{ scoring|floatformat:4 }}
+      </tr>
+      <tr>
+        <th scope="col">Уровень риска</th>
+        <td>{{ risk_level }}
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}
