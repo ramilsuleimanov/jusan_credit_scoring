@@ -1,4 +1,5 @@
-from datetime import datetime
+import os
+
 
 EMAIL_LENGTH = COMPANY_NAME_LENGTH = 254
 (USERNAME_LENGTH, FIRST_NAME_LENGTH, LAST_NAME_LENGTH, PASSWORD_LENGTH,
@@ -20,12 +21,12 @@ RISK_LEVEL = [
     (2, 'Высокий')
 ]
 RISK_LEVEL_DICT = {
-    0: 'Умеренный',
-    1: 'Повышенный',
-    2: 'Высокий',
+    0: ('Умеренный', 'green'),
+    1: ('Повышенный', 'orange'),
+    2: ('Высокий', 'red'),
 }
 ROUND_DIGITS = 4
-request_data_structure = {
+REQUEST_DATA_STRUCTURE = {
     'contract_number': (str, None),
     'contract_date': (None, None),
     'contract_amount': (float, MIN_AMOUNT),
@@ -48,7 +49,7 @@ request_data_structure = {
     'contract_current_outstanding': (float, MIN_AMOUNT),
     'contract_total_outstanding': (float, MIN_AMOUNT),
 }
-scoring_card_weights = {
+SCORING_CARD_WEIGHTS = {
     'current_ratio': 0.10,
     'equity_ratio': 0.10,
     'operational_margin': 0.07,
@@ -62,73 +63,91 @@ scoring_card_weights = {
     'contracts_completed': 0.05,
     'license_category': 0.10
 }
-scoring_card_criteria = {
+SCORING_CARD_CRITERIA = {
     'current_ratio': [
-        (None, 0.80, 0),
-        (0.80, 1.20, 2),
-        (1.20, None, 4),
+        (None, 0.80, 10),
+        (0.80, 1.20, 50),
+        (1.20, None, 100),
     ],
     'equity_ratio': [
-        (None, 0.05, 0),
-        (0.05, 0.20, 2),
-        (0.20, None, 4),
+        (None, 0.05, 10),
+        (0.05, 0.20, 50),
+        (0.20, None, 100),
     ],
     'operational_margin': [
-        (None, 0.05, 0),
-        (0.05, 0.20, 2),
-        (0.20, None, 4),
+        (None, 0.05, 10),
+        (0.05, 0.20, 50),
+        (0.20, None, 100),
     ],
     'net_margin': [
-        (None, 0.0001, 0),
-        (0.0001, 0.10, 2),
-        (0.10, None, 4),
+        (None, 0.0001, 10),
+        (0.0001, 0.10, 50),
+        (0.10, None, 100),
     ],
     'debt_to_ebitda': [
-        (None, 3.00, 4),
-        (3.00, 6.00, 2),
-        (6.00, None, 0),
+        (None, 3.00, 10),
+        (3.00, 6.00, 50),
+        (6.00, None, 100),
     ],
     'fixed_assets_ratio': [
-        (None, 0.05, 0),
-        (0.05, 0.20, 2),
-        (0.20, None, 4),
+        (None, 0.05, 10),
+        (0.05, 0.20, 50),
+        (0.20, None, 100),
     ],
     'oper_income_growth': [
-        (None, 0.0001, 0),
-        (0.0001, 0.10, 2),
-        (0.10, None, 4),
+        (None, 0.0001, 10),
+        (0.0001, 0.10, 50),
+        (0.10, None, 100),
     ],
     'contract_weight': [
-        (None, 0.10, 4),
-        (0.10, 0.33, 2),
-        (0.33, None, 0),
+        (None, 0.10, 10),
+        (0.10, 0.33, 50),
+        (0.33, None, 100),
     ],
     'net_working_capital_to_contract': [
-        (None, 0.10, 0),
-        (0.10, 0.50, 2),
-        (0.50, None, 4),
+        (None, 0.10, 10),
+        (0.10, 0.50, 50),
+        (0.50, None, 100),
     ],
     'experience': [
-        (None, 1, 0),
-        (1, 3, 2),
-        (3, None, 4)
+        (None, 1, 10),
+        (1, 3, 50),
+        (3, None, 100)
     ],
     'contracts_completed': [
-        (None, 2, 0),
-        (2, 5, 2),
-        (5, None, 4),
+        (None, 2, 10),
+        (2, 5, 50),
+        (5, None, 100),
     ],
     'license_category': [
-        (None, 0, 0),
-        (0, 3, 4),
-        (3, None, 2)
+        (None, 0, 10),
+        (0, 3, 50),
+        (3, None, 100)
     ]
 }
 
-risk_level_mapping = [
-    (None, 1.5, 2),
-    (1.5, 3.2, 1),
-    (3.2, None, 0),
+RISK_LEVEL_MAPPING = [
+    (None, 30, 2),
+    (30, 80, 1),
+    (80, None, 0),
+]
+
+# Данные для сохранения скоринга в pdf
+DOWN_STEP = 20
+X_START_POS = 30
+X_END_POS = 570
+X_MID_POS = 300
+Y_LINE_POS = 790
+Y_HEAD_POS = 800
+Y_AFTER_LINE_POS = 760
+FONT_SIZE_HEADER = 16
+FONT_SIZE_NORMAL = 14
+REQUEST_ATTRS = ['policyholder', 'contract_number', 'contract_date']
+REPORT_ATTRS = [
+    'current_ratio', 'equity_ratio', 'operational_margin', 'net_margin',
+    'debt_to_ebitda', 'fixed_assets_ratio', 'oper_income_growth',
+    'contract_weight', 'net_working_capital_to_contract', 'experience',
+    'contracts_completed', 'license_category'
 ]
 
 # Сообщения об ошибках
@@ -144,3 +163,13 @@ LICENSE_CATEGORIES_ERR_MSG = (
 FIELD_MISSING_ERR_MSG = 'В предоставленных данных отсутствует '
 FIELD_REDUNDANT_ERR_MSG = 'В предоставленных данных есть лишнее поле '
 INCORRECT_TYPE_ERR_MSG = 'Не соответствует тип данных '
+FILE_READ_ERR_MSG = 'Ошибка при чтении файла'
+
+# Папка со шрифтами
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CALIBRI_FONT_PATH = os.path.join(BASE_DIR, 'static', 'fonts', 'calibri.ttf')
+CALIBRI_BOLD_FONT_PATH = os.path.join(
+    BASE_DIR, 'static', 'fonts', 'calibri_bold.ttf'
+)
+
+REQUESTS_PER_PAGE = 2

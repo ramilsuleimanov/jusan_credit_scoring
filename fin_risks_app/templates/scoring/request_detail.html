@@ -10,41 +10,42 @@
     <tbody>
       <tr>
         <th scope="col">№ запроса</th>
-        <td>{{ request.id }}
+        <td>{{ request.id }}</td>
       </tr>
       <tr>
         <th scope="col">БИН</th>
-        <td>{{ request.policyholder.bin }}
+        <td>{{ request.policyholder.bin }}</td>
       </tr>
       <tr>
         <th scope="col">Страхователь</th>
-        <td>{{ request.policyholder }}
+        <td>{{ request.policyholder }}</td>
       </tr>
       <tr>
         <th scope="col">Номер контракта</th>
-        <td>{{ request.contract_number }}
+        <td>{{ request.contract_number }}</td>
       </tr>
       <tr>
         <th scope="col">Дата контракта</th>
-        <td>{{ request.contract_date|date:"d.m.Y" }}
+        <td>{{ request.contract_date|date:"d.m.Y" }}</td>
       </tr>
       <tr>
         <th scope="col">Сумма контракта</th>
-        <td>{{ request.contract_amount|floatformat:2 }}
+        <td>{{ request.contract_amount|floatformat:2 }}</td>
       </tr>
       <tr>
         <th scope="col">Дата запроса</th>
-        <td>{{ request.created_at }}
+        <td>{{ request.created_at }}</td>
       </tr>
       <tr>
         <th scope="col">Скоринговый балл</th>
-        <td>{{ scoring|floatformat:4 }}
+        <td>{{ scoring|floatformat:2 }}</td>
       </tr>
       <tr>
         <th scope="col">Уровень риска</th>
-        <td>{{ risk_level }}
+        <td style="color: {{ risk_level_color }}">{{ risk_level }}</td>
       </tr>
     </tbody>
   </table>
 </div>
+<a class="btn btn-custom my-3" href="{% url 'scoring:download_report' request.id %}" download="score_report_{{ request.id }}.pdf">Сохранит отчёт</a>
 {% endblock %}

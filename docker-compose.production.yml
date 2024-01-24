@@ -1,0 +1,38 @@
+version: '2.23.0-desktop.1'
+
+volumes:
+  pg_data:
+  static:
+  media:
+
+services:
+  db:
+    image: postgres:13.10
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  backend:
+    image: kareits/foodgram_backend
+    env_file: .env
+    volumes:
+      - static:/backend_static
+    depends_on:
+      - db
+  # frontend:
+  #   env_file: .env
+  #   image: kareits/foodgram_frontend
+  #   command: cp -r /app/build/. /frontend_static/
+  #   volumes:
+  #     - static:/frontend_static
+  #   depends_on:
+  #     - backend
+  # gateway:
+  #   image: kareits/foodgram_gateway
+  #   volumes:
+  #     - static:/staticfiles/
+  #     - media:/app/media/
+  #     - ./docs/:/usr/share/nginx/html/api/docs/
+  #   depends_on:
+  #     - backend
+  #   ports:
+  #     - 8000:80

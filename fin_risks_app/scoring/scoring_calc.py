@@ -1,6 +1,6 @@
 from fin_scoring.constants import (
-    ROUND_DIGITS, scoring_card_criteria, scoring_card_weights,
-    risk_level_mapping
+    ROUND_DIGITS, SCORING_CARD_CRITERIA, SCORING_CARD_WEIGHTS,
+    RISK_LEVEL_MAPPING
 )
 
 
@@ -56,8 +56,8 @@ def calculate_scoring(report_data):
     scoring = 0
     for parameter in report_data:
         parameter_value = report_data[parameter]
-        weight = scoring_card_weights[parameter]
-        criteria = scoring_card_criteria[parameter]
+        weight = SCORING_CARD_WEIGHTS[parameter]
+        criteria = SCORING_CARD_CRITERIA[parameter]
         if not criteria[0][0] and parameter_value <= criteria[0][1]:
             parameter_score = criteria[0][2]
         elif not criteria[2][1] and parameter_value > criteria[2][0]:
@@ -72,12 +72,10 @@ def calculate_scoring(report_data):
 
 def get_risk_level(scoring):
     """Определяет уровень риска страхователя."""
-    if not risk_level_mapping[0][0] and scoring <= risk_level_mapping[0][1]:
-        risk_level = risk_level_mapping[0][2]
-    elif not risk_level_mapping[2][1] and scoring > risk_level_mapping[2][0]:
-        risk_level = risk_level_mapping[2][2]
+    if not RISK_LEVEL_MAPPING[0][0] and scoring <= RISK_LEVEL_MAPPING[0][1]:
+        risk_level = RISK_LEVEL_MAPPING[0][2]
+    elif not RISK_LEVEL_MAPPING[2][1] and scoring > RISK_LEVEL_MAPPING[2][0]:
+        risk_level = RISK_LEVEL_MAPPING[2][2]
     else:
-        risk_level = risk_level_mapping[1][2]
+        risk_level = RISK_LEVEL_MAPPING[1][2]
     return risk_level
-
-

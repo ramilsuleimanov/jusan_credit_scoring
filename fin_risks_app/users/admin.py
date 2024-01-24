@@ -50,7 +50,10 @@ class UserAdmin(BaseUserAdmin):
     ]
     add_fieldsets = (
         (None, {
-            'fields': ('username', 'email', 'first_name', 'last_name', 'is_active', 'password'),
+            'fields': (
+                'username', 'email', 'first_name', 'last_name', 'is_active',
+                'password'
+            ),
         }),
     )
 

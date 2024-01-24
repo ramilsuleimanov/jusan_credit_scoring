@@ -19,29 +19,6 @@ body {
   font-weight: bold;
 }
 
-/* Settings for social network links */
-.icon-lst {
-  text-align: right;
-  list-style-type: none;
-  padding: 0;
-}
-
-.icon-lst li {
-  display: inline;
-  margin-right: 10px;
-}
-
-.scl-icon {
-  color: white;
-  font-size: 20px;
-  text-decoration: none;
-}
-
-.scl-icon:hover {
-  color: #4A4242;
-}
-
-
 /* Settings for footer */
 .ftr {
   color: #DCD6D6;
@@ -49,66 +26,6 @@ body {
   text-shadow: none;
   padding-top: 25px;
   text-align: center;
-}
-
-
-/* Customized colors for Bootstrap's Accordion */
-.accordion {
-  --bs-accordion-active-color: white;
-  --bs-accordion-btn-bg: #DCD6D6;
-  --bs-accordion-active-bg: #6B6767;
-  --bs-accordion-btn-focus-border-color: black;
-  --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(65, 55, 55, 0.25);
-  --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-}
-
-/* Settings to customize Bootstrap's carousel */
-.carousel-caption {
-  text-shadow: 0 .3rem .3rem rgba(0, 0, 0, 1);
-}
-
-.carousel-control-prev-icon {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
-}
-
-.carousel-control-next-icon {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
-}
-
-
-/* Settings for feedback */
-.feedback {
-  text-align: center;
-  align-items: center;
-  font-size: 12pt;
-  color: white;
-  text-shadow: 0 .1rem .1rem rgba(0, 0, 0, .5);
-}
-
-.btn-primary-custom {
-  --bs-btn-font-size: 0.85rem;
-  --bs-btn-bg: white;
-  --bs-btn-border-color: none;
-  --bs-btn-hover-color: #322A2C;
-  --bs-btn-hover-bg: #A49999;
-  --bs-btn-hover-border-color: none;
-  --bs-btn-active-bg: #A49999;
-  --bs-btn-active-border-color: none;
-  --bs-btn-border-radius: 1rem;
-}
-
-/* Settings for instruction before the contact form */
-#instr {
-  font-size: 12pt;
-  color: white;
-  text-shadow: 0 .1rem .1rem rgba(0, 0, 0, .25);
-}
-
-#contactAnswer {
-  font-size: 18pt;
-  text-align: center;
-  color: white;
-  text-shadow: 0 .1rem .1rem rgba(0, 0, 0, .25);
 }
 
 
@@ -198,13 +115,6 @@ border-bottom-color: #fff;
   --bs-table-color: white;
 }
 
-/* Category menu settings */
-
-/* .table {
-  opacity: 0.6;
-  --bs-table-color: white;
-  --bs-table-bg: black;
-} */
 
 .price {
   opacity: 1.0;
@@ -247,4 +157,38 @@ a:hover {
 a {
   color: white;
   text-decoration: none;
+}
+
+/* Pagination style */
+.pagination {
+  --bs-pagination-padding-x: 0.75rem;
+  --bs-pagination-padding-y: 0.375rem;
+  --bs-pagination-font-size: 1rem;
+  --bs-pagination-color: black;
+  --bs-pagination-bg: #fff;
+  --bs-pagination-border-width: 1px;
+  --bs-pagination-border-color: #dee2e6;
+  --bs-pagination-border-radius: 0.375rem;
+  --bs-pagination-hover-color: rgb(66, 63, 63);
+  --bs-pagination-hover-bg: #e9ecef;
+  --bs-pagination-hover-border-color: #dee2e6;
+  --bs-pagination-focus-color: #ebb256;
+  --bs-pagination-focus-bg: #e9ecef;
+  --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  --bs-pagination-active-color: #fff;
+  --bs-pagination-active-bg: #ebb256;
+  --bs-pagination-active-border-color: None;
+  --bs-pagination-disabled-color: #6c757d;
+  --bs-pagination-disabled-bg: #fff;
+  --bs-pagination-disabled-border-color: #dee2e6;
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+}
+
+.active>.page-link, .page-link.active {
+  z-index: 3;
+  color: var(--bs-pagination-active-color);
+  background-color: var(--bs-pagination-active-bg);
+  border-color: var(--bs-pagination-active-border-color);
 }

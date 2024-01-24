@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
+  <div class="row mb-5"></div>
   <div class="col d-flex justify-content-center pt-md-5">
     <div class="card text-center">
-      <div>
-        <h6>Вы успешно вышли из системы</h6>
-      </div>
+      <h6>Вы успешно вышли из системы</h6>
       <div class="card-body logout-card text-center">
         <a class="btn btn-custom mx-3 my-3" href="{% url 'login' %}">Войти</a>
       </div>

@@ -8,6 +8,7 @@ from fin_scoring.constants import (
     RISK_LEVEL, RISK_LEVEL_LENGTH,
 )
 
+
 CustomUser = get_user_model()
 
 
@@ -222,6 +223,7 @@ class ScoreReport(models.Model):
         verbose_name='Прирост операционной прибыли',
     )
     license_category = models.SmallIntegerField(
+        verbose_name='Категория лицензии',
         choices=LICENSE_CATEGORIES,
         default=0,
     )

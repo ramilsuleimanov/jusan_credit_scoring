@@ -1,14 +1,10 @@
-from django.core.exceptions import ValidationError
-from django.http import HttpResponseBadRequest
-from django.shortcuts import get_object_or_404, redirect, render
-
 from companies.models import Company
 from fin_scoring.constants import (
     BIN_COMPANY_ERR_MSG, BIN_DIGIT_ERR_MSG, BIN_LENGTH,
     BIN_LENGTH_ERR_MSG, LICENSE_CATEGORIES_CHECK, BIN_NOT_MATCH_NAME_ERR_MSG,
     MIN_AMOUNT_ERR_MSG, LICENSE_CATEGORIES_ERR_MSG,
     FIELD_MISSING_ERR_MSG, FIELD_REDUNDANT_ERR_MSG,
-    INCORRECT_TYPE_ERR_MSG, request_data_structure
+    INCORRECT_TYPE_ERR_MSG, REQUEST_DATA_STRUCTURE
 )
 
 
@@ -31,16 +27,16 @@ def validate_bin_company(bin, name):
 
 def validate_request_data(request_data):
     """Проверяет корректность данных в запросе."""
-    for item in request_data_structure:
+    for item in REQUEST_DATA_STRUCTURE:
         if item not in request_data:
             return f'{FIELD_MISSING_ERR_MSG} {item}'
     for key, value in request_data.items():
-        if key not in request_data_structure:
+        if key not in REQUEST_DATA_STRUCTURE:
             return f'{FIELD_REDUNDANT_ERR_MSG} {key}'
-        if request_data_structure[key][0]:
+        if REQUEST_DATA_STRUCTURE[key][0]:
             try:
-                data_type = request_data_structure[key][0]
-                min_value = request_data_structure[key][1]
+                data_type = REQUEST_DATA_STRUCTURE[key][0]
+                min_value = REQUEST_DATA_STRUCTURE[key][1]
                 request_data[key] = data_type(
                     value
                 )

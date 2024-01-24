@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}БИН{% endblock %}
+{% block content %}
+  <div class="col d-flex justify-content-center pt-md-5">
+    <div class="card col-7">
+      <div class="card-body">
+        <h6>Проверить наличие компании</h6>
+        <form method="post">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <div class="pt-md-3">
+            <button class="btn btn-custom" type="submit">Проверить</button>
+          </div>
+          <p></p>
+        </form>
+        <h6>Результат поиска:</h6>
+        <p><input type="text" name="company" value="{{ result }}" class="form-control"></p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
