@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 from companies.models import Company
 from fin_scoring.constants import (
@@ -162,7 +163,7 @@ class ScoreRequest(models.Model):
         verbose_name='Остаток денег по реестру контрактов',        
     )
     created_at = models.DateTimeField(
-        auto_now=True,
+        default=timezone.now,
         verbose_name='Создано/обновлено',
     )
 
@@ -242,7 +243,7 @@ class ScoreReport(models.Model):
         verbose_name='Уровень риска',
     )
     created_at = models.DateTimeField(
-        auto_now=True,
+        default=timezone.now,
         verbose_name='Создано/обновлено',
     )
 

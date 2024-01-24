@@ -142,7 +142,7 @@ Y_HEAD_POS = 800
 Y_AFTER_LINE_POS = 760
 FONT_SIZE_HEADER = 16
 FONT_SIZE_NORMAL = 14
-REQUEST_ATTRS = ['policyholder', 'contract_number', 'contract_date']
+REQUEST_ATTRS = ['policyholder', 'contract_number']
 REPORT_ATTRS = [
     'current_ratio', 'equity_ratio', 'operational_margin', 'net_margin',
     'debt_to_ebitda', 'fixed_assets_ratio', 'oper_income_growth',
@@ -172,4 +172,4 @@ CALIBRI_BOLD_FONT_PATH = os.path.join(
     BASE_DIR, 'static', 'fonts', 'calibri_bold.ttf'
 )
 
-REQUESTS_PER_PAGE = 2
+REQUESTS_PER_PAGE = 20

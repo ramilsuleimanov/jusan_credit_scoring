@@ -2,12 +2,12 @@ import pandas as pd
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.urls import reverse
 from django.views import View
 from django.views.generic import DetailView, ListView
-from django.http import HttpResponse
 from reportlab.lib import colors
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
@@ -139,14 +139,22 @@ def download_pdf_report(request, id):
     pdf.line(X_START_POS, Y_LINE_POS, X_END_POS, Y_LINE_POS)
     pdf.setFont('Calibri', FONT_SIZE_NORMAL)
     y_position = Y_AFTER_LINE_POS
+    created_at_local = score_report.created_at.astimezone(
+        timezone.get_current_timezone()
+    )
     pdf.drawString(
         X_START_POS, Y_AFTER_LINE_POS, (
             f'Дата и время отчета: '
-            f'{score_report.created_at.strftime("%Y-%m-%d %H:%M:%S")}'
+            f'{created_at_local.strftime("%d-%m-%Y %H:%M:%S")}'
         )
     )
     _, y_position = print_attribute(
         ScoreRequest, REQUEST_ATTRS, score_request, y_position, pdf
+    )
+    y_position -= DOWN_STEP
+    pdf.drawString(
+        X_START_POS, y_position, 
+        f'Дата контракта: {score_request.contract_date.strftime("%d-%m-%Y")}'
     )
     y_position -= DOWN_STEP
     pdf.line(X_START_POS, y_position, X_END_POS, y_position)
