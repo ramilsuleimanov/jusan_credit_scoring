@@ -15,13 +15,13 @@ SECRET_KEY = os.environ.get('SECRET_KEY', DEFAULT_SECRET_KEY)
 
 EXPECTED_DEBUG_VALUE = 'True'
 
-DEBUG = os.environ.get('DEBUG', 'False') == EXPECTED_DEBUG_VALUE
+# DEBUG = os.environ.get('DEBUG', 'False') == EXPECTED_DEBUG_VALUE
 
-# DEBUG = True
+DEBUG = True
 
-# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
+# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
 
 
 # Application definition
@@ -57,7 +57,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 'DIRS': [TEMPLATES_DIR],
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,8 +76,8 @@ WSGI_APPLICATION = 'fin_scoring.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'django'),
-        'USER': os.getenv('POSTGRES_USER', 'django'),
+        'NAME': os.getenv('POSTGRES_DB', 'rama'),
+        'USER': os.getenv('POSTGRES_USER', 'rama'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
         'HOST': os.getenv('DB_HOST', ''),
         'PORT': os.getenv('DB_PORT', 5432)
@@ -129,7 +129,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/backend_static/static'
-# STATICFILES_DIRS = ((BASE_DIR / 'static/'),)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 # STATIC_ROOT = '/backend_static/static'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

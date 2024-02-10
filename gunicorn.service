@@ -1,0 +1,17 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=rama
+Group=www-data
+WorkingDirectory=/home/rama/projects/jcs/jusan_credit_scoring/fin_risks_app
+ExecStart=/home/rama/projects/jcs/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          fin_scoring.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

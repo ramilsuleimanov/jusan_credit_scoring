@@ -1,0 +1,19 @@
+server {
+    listen 80;
+    server_name 172.26.185.108;  # Или замените на ваш домен или IP-адрес
+    location = /favicon.ico { access_log off; log_not_found off; }
+
+    root /home/rama/projects/jcs/jusan_credit_scoring/fin_risks_app;  # Путь к корневой директории вашего проекта
+
+    location /static/ {
+        alias /home/rama/projects/jcs/jusan_credit_scoring/fin_risks_app/static/;  # Путь к статическим файлам вашего Django приложения
+    }
+
+    # location = favicon.ico {
+    #    alias /home/rama/projects/jsc/jusan_credit_scoring/fin_risks_app/static/favicon.ico;  # Путь к файлу favicon.ico    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;  # Путь к вашему Gunicorn сокету
+    }
+}
